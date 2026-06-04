@@ -48,10 +48,10 @@ The core recognition pipeline leverages the **PARSeq** architecture. PARSeq trea
 graph TD
     A[Input Scene Text Image] --> B[Preprocessing & Resize to 32x128]
     B --> C[Feature Extraction via ViT Backbone]
-    C --> D[PARSeq Multi-head Attention Decoder]
+    C --> D[PARSeq Transformer Decoder]
     D --> E[Permutation Autoregressive Decoding]
-    E --> F[Language Charset Mapping]
-    F --> G[Extracted Text & Confidence Score]
+    E --> F[Tokenizer-based Character Mapping]
+    F --> G[Predicted Text Output & Confidence Score]
 ```
 
 * **Feature Extractor**: A Vision Transformer (ViT) backbone is utilized to extract robust visual features from character sequences.

@@ -6,37 +6,40 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 [![Hugging Face Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow.svg?style=flat-square)](https://huggingface.co/spaces/G-Madhuri/Multilingual_Scene_Text_Recognition_System)
 
-A production-ready Scene Text Recognition (STR) system tailored for Indic scripts, specifically supporting **Telugu**, **Bengali**, and **Oriya**. Built on the state-of-the-art **PARSeq (Permutated Autoregressive Sequence)** architecture, this system enables high-accuracy text extraction from natural scenes (e.g., street signs, billboards, book covers).
+An end-to-end multilingual Scene Text Recognition (STR) system tailored for Indic scripts, specifically supporting **Telugu**, **Bengali**, and **Oriya**. Built using state-of-the-art **PARSeq (Permutated Autoregressive Sequence)** architecture, this system enables robust text extraction from natural scenes such as street signs, billboards, and book covers.
 
 🤖 **Live Demo**: Access the web application hosted on [Hugging Face Spaces](https://huggingface.co/spaces/G-Madhuri/Multilingual_Scene_Text_Recognition_System).
 
 ---
 
 ## 📌 Table of Contents
+
 * [✨ Features](#-features)
 * [⚙️ System Architecture](#%EF%B8%8F-system-architecture)
 * [📊 Model Performance](#-model-performance)
 * [📁 Datasets](#-datasets)
+* [⚠️ Limitations](#%EF%B8%8F-limitations)
+* [🚀 Future Work](#-future-work)
 * [🗂️ Directory Structure](#%EF%B8%8F-directory-structure)
 * [🚀 Getting Started](#-getting-started)
+
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
   * [Model Weights Setup](#model-weights-setup)
   * [Running the Web App](#running-the-web-app)
 * [💡 How to Use the UI](#-how-to-use-the-ui)
-* [🛡️ Troubleshooting](#%EF%B8%8F-troubleshooting)
 * [🙏 Acknowledgments](#-acknowledgments)
 
 ---
 
 ## ✨ Features
 
-* **Multi-lingual Script Support**: Highly accurate text recognition for Telugu, Bengali, and Oriya scripts.
+* **Multi-lingual Script Support**: Text recognition for Telugu, Bengali, and Oriya scripts.
 * **State-of-the-Art Core**: Utilizes the PARSeq transformer architecture, optimizing both speed and recognition accuracy.
 * **Gradio Web Interface**: A clean, modern dashboard built with customized CSS and a tabbed navigation system for each language.
 * **Sample Galleries**: Integrated sample images for each language enabling users to perform one-click testing.
 * **Confidence Scoring**: Real-time confidence statistics provided for every text prediction.
-* **GPU Acceleration**: Built-in CUDA support for instantaneous local inference.
+* **GPU Acceleration**: Built-in CUDA support for faster local inference.
 
 ---
 
@@ -44,15 +47,9 @@ A production-ready Scene Text Recognition (STR) system tailored for Indic script
 
 The core recognition pipeline leverages the **PARSeq** architecture. PARSeq treats Scene Text Recognition as a sequence-to-sequence learning problem and improves over standard autoregressive models by using Permutation Language Modeling (PLM).
 
-```mermaid
-graph TD
-    A[Input Scene Text Image] --> B[Preprocessing & Resize to 32x128]
-    B --> C[Feature Extraction via ViT Backbone]
-    C --> D[PARSeq Transformer Decoder]
-    D --> E[Permutation Autoregressive Decoding]
-    E --> F[Tokenizer-based Character Mapping]
-    F --> G[Predicted Text Output & Confidence Score]
-```
+PARSeq leverages permutation language modeling (PLM), enabling the model to learn contextual dependencies beyond conventional left-to-right decoding.
+
+The PARSeq backbone was initialized using pretrained weights and further fine-tuned on Indic scene text datasets.
 
 * **Feature Extractor**: A Vision Transformer (ViT) backbone is utilized to extract robust visual features from character sequences.
 * **Autoregressive Decoder**: Predicts characters while leveraging bidirectional context dynamically during training, allowing it to perform well even with blurred, occluded, or stylized text.
@@ -62,13 +59,15 @@ graph TD
 
 ## 📊 Model Performance
 
+The system demonstrates promising multilingual recognition capability on low-resource Indic scene text benchmarks.
+
 Evaluated using standard text recognition metrics: **Exact Match (EM)** accuracy, **Character Error Rate (CER)**, and **Word Error Rate (WER)**.
 
-| Language | Exact Match (EM) | CER (Character Error Rate) | WER (Word Error Rate) | Test Samples Count |
-| :--- | :---: | :---: | :---: | :---: |
-| **Telugu** | **69.7%** | **7.8%** | **30.3%** | 300 |
-| **Bengali** | **55.4%** | **19.5%** | **44.6%** | 785 |
-| **Oriya** | **52.0%** | **19.2%** | **48.0%** | 893 |
+| Language    | Exact Match (EM) | CER (Character Error Rate) | WER (Word Error Rate) | Test Samples Count |
+| :---------- | :--------------: | :------------------------: | :-------------------: | :----------------: |
+| **Telugu**  |     **69.7%**    |          **7.8%**          |       **30.3%**       |         300        |
+| **Bengali** |     **55.4%**    |          **19.5%**         |       **44.6%**       |         785        |
+| **Oriya**   |     **52.0%**    |          **19.2%**         |       **48.0%**       |         893        |
 
 ---
 
@@ -79,14 +78,35 @@ The models were pre-trained and fine-tuned on the benchmark Indic Scene Text dat
 🔗 **Dataset Source**: [IIIT Hyderabad ILOCR Datasets](https://ilocr.iiit.ac.in/dataset/)
 
 ### 1. Pre-training: Synthetic Data
+
 * **IIIT-Synthetic-IndicSTR-Telugu**: 1.5M train / 0.5M val / 0.5M test images
 * **IIIT-Synthetic-IndicSTR-Bengali**: 1.5M train / 0.5M val / 0.5M test images
 * **IIIT-Synthetic-IndicSTR-Oriya**: 1.5M train / 0.5M val / 0.5M test images
 
 ### 2. Fine-tuning: Real Scene Text Data
+
 * **IndicSTR12-Telugu**: 900 train / 300 test images
 * **IndicSTR12-Bengali**: 2,354 train / 785 test images
 * **IndicSTR12-Oriya**: 2,676 train / 893 test images
+
+---
+
+## ⚠️ Limitations
+
+* Performance may decrease on severely blurred or low-light images.
+* Complex artistic fonts remain challenging.
+* Current support is limited to Telugu, Bengali, and Oriya scripts.
+* Mixed-script multilingual scene text requires further optimization.
+
+---
+
+## 🚀 Future Work
+
+* Extend support to additional Indic scripts
+* Improve robustness on low-resolution scene text
+* Explore lightweight mobile deployment
+* Investigate vision-language foundation models for OCR
+* Support multilingual mixed-script recognition
 
 ---
 
@@ -111,6 +131,7 @@ Multilingual_scene_text_recognition_system/
 Follow these steps to set up and run the system on your local machine.
 
 ### Prerequisites
+
 * Python 3.8, 3.9, or 3.10
 * pip (Python package installer)
 * CUDA-capable GPU (Optional, but recommended for faster response times)
@@ -118,12 +139,14 @@ Follow these steps to set up and run the system on your local machine.
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/YashaswiDarga/Multilingual_scene_text_recognition_system.git
    cd Multilingual_scene_text_recognition_system
    ```
 
 2. **Create and activate a virtual environment (Recommended):**
+
    ```bash
    # Using venv (Windows)
    python -m venv venv
@@ -135,6 +158,7 @@ Follow these steps to set up and run the system on your local machine.
    ```
 
 3. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -143,15 +167,16 @@ Follow these steps to set up and run the system on your local machine.
 
 Before starting the web application, you must download the trained PyTorch checkpoints for each language and place them directly in the **project root directory**:
 
-| Language | Target Weight Filename |
-| :--- | :--- |
-| **Telugu** | `parseq_telugu_finetuned_final_5epochs.pth` |
-| **Bengali** | `finetuned_bengali_model.pth` |
-| **Oriya** | `parseq_oriya_final_direct.pth` |
+| Language    | Target Weight Filename                      |
+| :---------- | :------------------------------------------ |
+| **Telugu**  | `parseq_telugu_finetuned_final_5epochs.pth` |
+| **Bengali** | `finetuned_bengali_model.pth`               |
+| **Oriya**   | `parseq_oriya_final_direct.pth`             |
 
 ### Running the Web App
 
 Launch the Gradio interface using:
+
 ```bash
 python app.py
 ```
@@ -164,26 +189,11 @@ Once initialized, navigate to `http://localhost:7860` in your web browser.
 
 1. **Choose a Language Tab**: Select the tab representing the language of your scene text image (Telugu, Bengali, or Oriya).
 2. **Input Image**:
+
    * **Upload**: Drag & drop or click the main upload frame to select a local image.
    * **Gallery**: Click on any of the provided sample images under the preview frame to load it instantly.
 3. **Execute OCR**: Click the **✨ Extract Text** button.
 4. **View Outputs**: The recognized characters and average model confidence score will populate in the results cards on the right.
-
----
-
-## 🛡️ Troubleshooting
-
-### 1. `PARSeq not found at parseq/` or `ImportError: No module named 'strhub'`
-Ensure that the PARSeq dependency is installed correctly via `requirements.txt`. The app automatically attempts to load and initialize imports, but if it fails, run:
-```bash
-pip install git+https://github.com/baudm/parseq.git
-```
-
-### 2. `FileNotFoundError: Model not found`
-Double-check that the downloaded `.pth` weights are named exactly as shown in the [Model Weights Setup](#model-weights-setup) table and are saved in the project root folder.
-
-### 3. CPU vs GPU Execution
-By default, PyTorch will leverage CUDA if a compatible GPU and toolkit are detected. To force CPU execution or check availability, verify that `torch.cuda.is_available()` returns `True` in your python environment if you want GPU speed.
 
 ---
 
